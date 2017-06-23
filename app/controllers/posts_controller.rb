@@ -1,21 +1,20 @@
 class PostsController < ApplicationController
+  before_action :find_post, only: [:edit, :update, :show, :delete]
 
-	before_action :find_post, only: [:edit, :update, :show, :delete]
+  # Index action to render all posts
+  def index
+    @posts = Post.all
+  end
 
-		# Index action to render all posts
-	  def index
-	    @posts = Post.all
-	  end
-
-	  # New action for creating post
+  # New action for creating post
   def new
     @post = Post.new
   end
 
   # Create action saves the post into database
   def create
-    @post = Post.new
-    if @post.save(post_params)
+    @post = Post.new(post_params)
+    if @post.save
       flash[:notice] = "Successfully created post!"
       redirect_to post_path(@post)
     else
@@ -39,7 +38,7 @@ class PostsController < ApplicationController
     end
   end
 
-   # The show action renders the individual post after retrieving the the id
+  # The show action renders the individual post after retrieving the the id
   def show
   end
 
@@ -62,6 +61,4 @@ class PostsController < ApplicationController
   def find_post
     @post = Post.find(params[:id])
   end
-
-
 end
